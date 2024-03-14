@@ -1,6 +1,8 @@
 
 %% CHECK SIG FIGS FOR GENERAL AUTOSCALING FUNCTION
 % 
+% Test code with below
+%
 % clear; clc; close all;
 % 
 % number = 6677676865650; %original to store
@@ -11,9 +13,18 @@
 % fprintf("Original Number: %f\n",number)
 % fprintf("Scaled to %0.03f[%sunits]\n",round(scalednum,3),label)
 
+
 %% THE FUNCTION
-function [scaling,label,figs] = scaleData(number)
+
+%float scalar and vectors should be currently stable, cautious of matrices
+function [scaledData,scaling,label] = scaleData(num)
     
+    if length(num)>1
+        number = mean(num,'all');
+    else
+        number = num;
+    end
+
     %init sigfig counters
     sigfigs_left = 0;
     sigfigs_right = 0;
@@ -50,17 +61,22 @@ function [scaling,label,figs] = scaleData(number)
     %check for reduction scaling 
     if scaling>1
         %test number of 3s places
-        mag = floor(sigfigs_right/3);
-        if mag == 1
-            label = "milli";
+        mag = floor(sigfigs_right/3)+1;
+        if mod(sigfigs_right,3)==0
+            mag = mag-1;
+        end
+        if mag == 0
+            label = ""
+        elseif mag == 1
+            label = "m"; %milli
         elseif mag == 2
-            label = "micro";
+            label = "u"; %micro
         elseif mag == 3
-            label = "nano";
+            label = "n"; %nano
         elseif mag == 4
-            label = "pico";
+            label = "p"; %pico
         elseif mag == 5
-            label = "femto";
+            label = "f"; %femto
         elseif mag>5
             error("ERROR: Number too small for correct output")
         end
@@ -68,32 +84,35 @@ function [scaling,label,figs] = scaleData(number)
     %check for increase scaling 
     elseif scaling<1
         %test number of 3s places
-        mag = floor(sigfigs_left/3);
-        if mag == 1
-            label = "kilo";
+        mag = floor((sigfigs_left-2)/3)
+        if mag <= 0
+            label = "";
+        elseif mag == 1
+            label = "k"; %kilo
         elseif mag == 2
-            label = "mega";
+            label = "M"; %mega
         elseif mag == 3
-            label = "giga";
+            label = "G"; %giga
         elseif mag == 4
-            label = "tera";
+            label = "T"; %Tera
         elseif mag == 5
-            label = "peta";
+            label = "P"; %peta
         elseif mag>5
             error("ERROR: Number too large for correct output")
         end
     end
-
+    
+    
     %prefer to scale towards larger magnitude using conditional
     %redefine scaling after obtaining label
-    if sigfigs_left>1
+    if sigfigs_left>0
         scaling = 10^-(mag*3);
-        figs = sigfigs_left-1;
+        %figs = sigfigs_left-1;
     else  
-        scaling = 10^(mag*3);
-        figs = sigfigs_right;
+        scaling = 10^((mag)*3); %may be a bug here, check later
+        %figs = sigfigs_right;
     end
-
+    scaledData = scaling*num;
     %sprintf("%i sigfigs to left and %i zeros before right sigfigs",sigfigs_left,sigfigs_right)
 
 end
