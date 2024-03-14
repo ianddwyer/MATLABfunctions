@@ -65,7 +65,7 @@ function [scaledData,scaling,label] = scaleData(num)
             mag = mag-1;
         end
         if mag == 0
-            label = ""
+            label = "";
         elseif mag == 1
             label = "m"; %milli
         elseif mag == 2
@@ -83,7 +83,7 @@ function [scaledData,scaling,label] = scaleData(num)
     %check for increase scaling 
     elseif scaling<1
         %test number of 3s places
-        mag = floor((sigfigs_left-2)/3)
+        mag = floor((sigfigs_left-2)/3);
         if mag <= 0
             label = "";
         elseif mag == 1
@@ -108,10 +108,9 @@ function [scaledData,scaling,label] = scaleData(num)
         scaling = 10^-(mag*3);
         %figs = sigfigs_left-1;
     else  
-        scaling = 10^((mag)*3); %may be a bug here, check later
+        scaling = 10^((mag)*3);
         %figs = sigfigs_right;
     end
     scaledData = scaling*num;
-    %sprintf("%i sigfigs to left and %i zeros before right sigfigs",sigfigs_left,sigfigs_right)
-
+    
 end
