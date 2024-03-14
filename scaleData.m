@@ -5,13 +5,12 @@
 %
 % clear; clc; close all;
 % 
-% number = 6677676865650; %original to store
-% [scaling,label,figs] = scaleData(number);
-% 
-% scalednum = number*scaling;
+% number = 0.064; %original to store
+% [scalednum,scaling,label] = scaleData(number)
 % 
 % fprintf("Original Number: %f\n",number)
 % fprintf("Scaled to %0.03f[%sunits]\n",round(scalednum,3),label)
+
 
 
 %% THE FUNCTION
