@@ -1,3 +1,4 @@
+
 %float scalar and vectors should be currently stable, cautious of matrices
 %[scaledData,scaling,label] = scaleData(0.1); fprintf("input value: %f\nrescale with: %f\nunit prefix: %s\n",scaledData,scaling,label)
 function [scaledData,scaling,label] = scaleData(number)
@@ -42,25 +43,23 @@ function [scaledData,scaling,label] = scaleData(number)
                 case 1
                     %test number of 3s places
                     mag = floor((sigfigs_left)/3);
-                    scaling = 10^-(mag*3);
-                    if mag <= 0   
-                        label = "";
-                    else
-                        switch mag
-                            case 1
-                                label = "k"; %kilo
-                            case 2
-                                label = "M"; %mega
-                            case 3
-                                label = "G"; %giga
-                            case 4
-                                label = "T"; %Tera
-                            case 5
-                                label = "P"; %peta
-                            otherwise
-                                error("ERROR: Number too large for correct output")
-                        end
-                    end  
+                    scaling = 10^-(mag*3);  
+                    switch mag
+                        case 0
+                            label = "";
+                        case 1
+                            label = "k"; %kilo
+                        case 2
+                            label = "M"; %mega
+                        case 3
+                            label = "G"; %giga
+                        case 4
+                            label = "T"; %Tera
+                        case 5
+                            label = "P"; %peta
+                        otherwise
+                            error("ERROR: Number too large for correct output")
+                    end
             end
             scaledData = scaling.*number;  
 end
