@@ -1,4 +1,3 @@
-
 %float scalar and vectors should be currently stable, cautious of matrices
 %[scaledData,scaling,label] = scaleData(0.1); fprintf("input value: %f\nrescale with: %f\nunit prefix: %s\n",scaledData,scaling,label)
 function [scaledData,scaling,label] = scaleData(number)
@@ -8,8 +7,8 @@ function [scaledData,scaling,label] = scaleData(number)
             end
             
             %counts sig figs to right and left of zero
-            sigfigs_left = ceil(log10(floor(number)))-1
-            sigfigs_right = floor(log10(1/(number-floor(number))))
+            sigfigs_left = ceil(log10(floor(number)))-1;
+            sigfigs_right = floor(log10(1/(number-floor(number))));
             
             %for conditionals
             left = isinf(sigfigs_right);
