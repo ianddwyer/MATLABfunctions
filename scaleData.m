@@ -4,8 +4,9 @@
 %[scaledData,scaling,label] = scaleData(0.1); fprintf("input value: %f\nrescale with: %f\nunit prefix: %s\n",scaledData,scaling,label)
 function [scaledData,scaling,label] = scaleData(number)
             % provides scaling for mean value of arrays
+            numberOld = number;
             if length(number)>1
-                number = mean(number,'all');
+                number = 10^(median(log10(number),'all'));
             end
             
             %counts sig figs to right and left of zero
@@ -64,5 +65,5 @@ function [scaledData,scaling,label] = scaleData(number)
                             error("ERROR: Number too large for correct output")
                     end
             end
-            scaledData = scaling.*number;  
+            scaledData = scaling.*numberOld;  
 end
