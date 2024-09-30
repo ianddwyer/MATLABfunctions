@@ -2,7 +2,7 @@
 
 %float scalar and vectors should be currently stable, cautious of matrices
 %[scaledData,scaling,label] = scaleData(0.1); fprintf("input value: %f\nrescale with: %f\nunit prefix: %s\n",scaledData,scaling,label)
-function [scaledData,scaling,label] = scaleData(number)
+function [scaledData,rescaling,label] = scaleData(number)
             % provides scaling for mean value of arrays
             numberOld = number;
             if length(number)>1
@@ -11,7 +11,12 @@ function [scaledData,scaling,label] = scaleData(number)
             
             %counts sig figs to right and left of zero
             if floor(number)~=0 %ensure inf does not occur
-                sigfigs_left = ceil(log10(floor(number)))-1;
+                num = floor(number);
+                if num==1
+                    sigfigs_left = 0;
+                else
+                    sigfigs_left = ceil(log10(floor(number)))-1;
+                end
                 left = 1; %set switch condition 
             else
                 sigfigs_right = floor(log10(1/(number-floor(number))));
@@ -26,7 +31,7 @@ function [scaledData,scaling,label] = scaleData(number)
                     if mod(sigfigs_right,3)==0
                         mag = mag-1;
                     end
-                    scaling = 10^(mag*3);
+                    rescaling = 10^(mag*3);
                     switch mag
                         case 0
                             label = "";
@@ -41,13 +46,13 @@ function [scaledData,scaling,label] = scaleData(number)
                         case 5
                             label = "f"; %femto
                         otherwise
-                            error("ERROR: Number too small for correct output")
+                            error("ERROR: Number too small for correct RHS output")
                     end
             %check for increase scaling 
                 case 1
                     %test number of 3s places
                     mag = floor((sigfigs_left)/3);
-                    scaling = 10^-(mag*3);  
+                    rescaling = 10^-(mag*3);  
                     switch mag
                         case 0
                             label = "";
@@ -62,8 +67,8 @@ function [scaledData,scaling,label] = scaleData(number)
                         case 5
                             label = "P"; %peta
                         otherwise
-                            error("ERROR: Number too large for correct output")
+                            error("ERROR: Number too large for correct LHS output")
                     end
             end
-            scaledData = scaling.*numberOld;  
+            scaledData = rescaling.*numberOld;  
 end
