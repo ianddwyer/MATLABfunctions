@@ -1,11 +1,31 @@
-
 %% CHECK SIG FIGS FOR GENERAL AUTOSCALING FUNCTION
 % Test code with below
 %
 clear; clc; close all;
 
-number = 0.064; %original to store
-[scalednum,scaling,label] = scaleData(number)
+%original to store
+number = [0.001,0.1,0.01]; 
 
-fprintf("Original Number: %f\n",number)
-fprintf("Scaled to %0.03f[%sunits]\n",round(scalednum,3),label)
+%run test
+[scalednum,scaling,label] = scaleData(number);
+
+%print test results
+fprintf("Rescale Factor: %f\n",scaling)
+fprintf("Label: %s\n",label)
+fprintf("Original Number: [")
+for i = 1:length(number)
+    fprintf("%0.3f",number(i));
+    if i~=length(number)
+        fprintf(",")
+    end
+end
+fprintf("]\n")
+
+fprintf("Scaled to: [")
+for i = 1:length(number)
+    fprintf("%i",scalednum(i));
+    if i~=length(number)
+        fprintf(",")
+    end
+end
+fprintf("]%s\n\n",label)
